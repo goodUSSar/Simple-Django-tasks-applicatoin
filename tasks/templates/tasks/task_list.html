@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои задачи</title>
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+<body>
+    <main class="card">
+        <header>
+            <div>
+                <p class="label">НЕБОЛЬШОЙ DJANGO-ПРОЕКТ</p>
+                <h1>Мои задачи</h1>
+                <p class="subtitle">Добавляйте дела и отмечайте выполненные.</p>
+            </div>
+            <div class="count">
+                {{ tasks|length }}
+                <span>всего</span>
+            </div>
+        </header>
+
+        <form method="post" class="add-form">
+            {% csrf_token %}
+            {{ form.title }}
+            <button type="submit">Добавить</button>
+        </form>
+        {% if form.title.errors %}
+            <p class="error">{{ form.title.errors|striptags }}</p>
+        {% endif %}
+
+        <ul class="tasks">
+            {% for task in tasks %}
+                <li class="task {% if task.completed %}done{% endif %}">
+                    <form method="post" action="{% url 'toggle_task' task.id %}">
+                        {% csrf_token %}
+                        <button class="toggle" type="submit" aria-label="Изменить статус">
+                            {% if task.completed %}✓{% else %}○{% endif %}
+                        </button>
+                    </form>
+
+                    <span>{{ task.title }}</span>
+
+                    <form method="post" action="{% url 'delete_task' task.id %}">
+                        {% csrf_token %}
+                        <button class="delete" type="submit" aria-label="Удалить">×</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li class="empty">Задач пока нет. Добавьте первую.</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
