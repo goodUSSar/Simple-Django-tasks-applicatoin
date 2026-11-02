@@ -12,6 +12,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DJANGO_SECRET_KEY: github-actions-test-key
+      DJANGO_DEBUG: "False"
+      DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+
     steps:
       - name: Download repository
         uses: actions/checkout@v4
