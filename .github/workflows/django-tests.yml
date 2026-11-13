@@ -1,4 +1,4 @@
-name: Django test
+Game: Django test
 on:
   push:
     branches:
@@ -16,6 +16,7 @@ jobs:
       DJANGO_SECRET_KEY: github-actions-test-key
       DJANGO_DEBUG: "False"
       DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+
 
     steps:
       - name: Download repository
@@ -40,3 +41,5 @@ jobs:
 
       - name: Run tests
         run: python manage.py test
+      - name: Build Docker image
+        run: docker build -t simple-django-tasks:ci .
