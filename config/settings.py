@@ -60,12 +60,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+DATABASE_PATH = os.getenv(
+    "DJANGO_DATABASE_PATH",
+    str(BASE_DIR / "db.sqlite3"),
+)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DATABASE_PATH,
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = []
 LANGUAGE_CODE = "ru-ru"
